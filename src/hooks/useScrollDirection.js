@@ -1,3 +1,4 @@
+// src/hooks/useScrollDirection.js
 import { useState, useEffect } from "react";
 
 export default function useScrollDirection() {
