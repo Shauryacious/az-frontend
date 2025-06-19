@@ -5,8 +5,10 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import HomePage from "./pages/HomePage";
+import SellerDashboard from "./pages/SellerDashboard"; // Seller page
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import RequireSeller from "./components/RequireSeller";
 
 export default function App() {
   const [theme, setTheme] = useState("light");
@@ -25,6 +27,14 @@ export default function App() {
                 <ProtectedRoute>
                   <ProfilePage />
                 </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/seller/dashboard"
+              element={
+                <RequireSeller>
+                  <SellerDashboard />
+                </RequireSeller>
               }
             />
             {/* Add more routes here */}

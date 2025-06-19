@@ -1,3 +1,4 @@
+// src/components/TopUtilityHeader.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import useScrollDirection from "../hooks/useScrollDirection";
@@ -5,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function TopUtilityHeader() {
   const scrollDirection = useScrollDirection();
-  const { user, loading } = useAuth();
+  const { user, seller, loading } = useAuth();
 
   return (
     <div
@@ -38,7 +39,7 @@ export default function TopUtilityHeader() {
                 strokeLinecap="round"
               />
             </svg>
-            {user.name || user.email}
+            {seller ? seller.businessName || "Seller" : user.name || user.email}
           </Link>
         )}
       </div>

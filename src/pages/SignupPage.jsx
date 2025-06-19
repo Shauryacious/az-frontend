@@ -1,19 +1,23 @@
+// src/pages/SignupPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signup } from "../api";
+import { useAuth } from "../context/AuthContext";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { refreshUser } = useAuth();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
     try {
       await signup(email, password);
-      navigate("/login");
+      await refreshUser(); // Immediately update user state in context
+      navigate("/"); // Redirect to home or dashboard
     } catch (err) {
       setError(err.response?.data?.error || "Signup failed");
     }

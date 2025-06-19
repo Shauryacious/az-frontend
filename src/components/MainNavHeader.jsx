@@ -1,9 +1,24 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import amazonLogo from "../assets/amazon-logo.svg";
+import { useAuth } from "../context/AuthContext";
 
 export default function MainNavHeader() {
+  const { user, seller, loading } = useAuth();
+  const navigate = useNavigate();
+
+  const handleStartSellingClick = () => {
+    if (loading) return; // Prevent action while loading
+    if (!user) {
+      navigate("/signup");
+    } else if (user && !seller) {
+      navigate("/profile");
+    } else if (seller) {
+      navigate("/seller/dashboard");
+    }
+  };
+
   return (
     <nav
       className="w-full flex items-center justify-between px-8 py-3 bg-white border-b border-gray-100 sticky top-0 z-40"
@@ -37,17 +52,18 @@ export default function MainNavHeader() {
           </button>
         </div>
       </div>
-      {/* CTA + Search */}
+      {/* CTA + Search + (any other buttons) */}
       <div className="flex items-center gap-4">
-        <Link
-          to="/sell"
+        <button
+          onClick={handleStartSellingClick}
           className="bg-[#FF9900] hover:bg-[#ffb84d] text-black font-bold py-2 px-6 rounded-full shadow transition"
         >
-          Start Selling
-        </Link>
+          {seller ? "Seller Dashboard" : "Start Selling"}
+        </button>
         <button className="p-2 rounded-full hover:bg-gray-100 transition">
           <Search className="w-5 h-5 text-gray-500" />
         </button>
+        {/* ...other auth/profile buttons */}
       </div>
     </nav>
   );
