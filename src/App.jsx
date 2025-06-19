@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
@@ -5,7 +6,7 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import HomePage from "./pages/HomePage";
-import SellerDashboard from "./pages/SellerDashboard"; // Seller page
+import SellerRoutes from "./routes/SellerRoutes";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RequireSeller from "./components/RequireSeller";
@@ -29,15 +30,15 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            {/* Seller routes are now handled in SellerRoutes */}
             <Route
-              path="/seller/dashboard"
+              path="/seller/*"
               element={
                 <RequireSeller>
-                  <SellerDashboard />
+                  <SellerRoutes />
                 </RequireSeller>
               }
             />
-            {/* Add more routes here */}
           </Route>
         </Routes>
       </Router>
