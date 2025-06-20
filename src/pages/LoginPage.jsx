@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api";
 
+const CLIENT_TYPE = "consumer-frontend";
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +14,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     try {
-      await login(email, password);
+      await login(email, password, CLIENT_TYPE); // Pass client type
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.error || "Login failed");

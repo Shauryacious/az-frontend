@@ -1,4 +1,3 @@
-// src/context/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { fetchProfile, logout as apiLogout } from "../api";
 import { fetchSellerProfile } from "../api/sellerApi";
@@ -21,13 +20,29 @@ export function AuthProvider({ children }) {
     try {
       const res = await fetchProfile();
       setUser(res.data.user);
+      // Only fetch seller profile if user is a seller
+      if (res.data.user?.role === "seller") {
+        try {
+          const sellerRes = await fetchSellerProfile();
+          setSeller(sellerRes.data.seller);
+        } catch {
+          setSeller(null);
+        }
+      } else {
+        setSeller(null);
+      }
     } catch {
       setUser(null);
+      setSeller(null);
     }
   };
 
   // Refetch seller profile and update state
   const refreshSeller = async () => {
+    if (user?.role !== "seller") {
+      setSeller(null);
+      return;
+    }
     try {
       const sellerRes = await fetchSellerProfile();
       setSeller(sellerRes.data.seller);
@@ -42,10 +57,14 @@ export function AuthProvider({ children }) {
     try {
       const res = await fetchProfile();
       setUser(res.data.user);
-      try {
-        const sellerRes = await fetchSellerProfile();
-        setSeller(sellerRes.data.seller);
-      } catch {
+      if (res.data.user?.role === "seller") {
+        try {
+          const sellerRes = await fetchSellerProfile();
+          setSeller(sellerRes.data.seller);
+        } catch {
+          setSeller(null);
+        }
+      } else {
         setSeller(null);
       }
     } catch {

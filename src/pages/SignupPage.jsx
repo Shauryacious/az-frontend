@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { signup } from "../api";
 import { useAuth } from "../context/AuthContext";
 
+// Set the client type for this frontend
+// Change this to "consumer-frontend" or "beacon-frontend" for other frontends
+const CLIENT_TYPE = "seller-frontend";
+
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +19,8 @@ export default function SignupPage() {
     e.preventDefault();
     setError("");
     try {
-      await signup(email, password);
+      // Pass client type for automatic role assignment
+      await signup(email, password, CLIENT_TYPE);
       await refreshUser(); // Immediately update user state in context
       navigate("/"); // Redirect to home or dashboard
     } catch (err) {
