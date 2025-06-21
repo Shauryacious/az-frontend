@@ -8,15 +8,25 @@ import { CLIENT_TYPE } from "../constants/clientType";
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { refreshUser } = useAuth();
+
+  const isSeller = CLIENT_TYPE === "seller-frontend";
 
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
     try {
-      await signup(email, password, CLIENT_TYPE);
+      await signup(
+        email,
+        password,
+        CLIENT_TYPE,
+        isSeller ? businessName : undefined,
+        isSeller ? contactEmail : undefined
+      );
       await refreshUser();
       navigate("/");
     } catch (err) {
@@ -43,11 +53,31 @@ export default function SignupPage() {
         <input
           type="password"
           placeholder="Password"
-          className="mb-6 w-full px-3 py-2 border rounded"
+          className="mb-4 w-full px-3 py-2 border rounded"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        {isSeller && (
+          <>
+            <input
+              type="text"
+              placeholder="Business Name"
+              className="mb-4 w-full px-3 py-2 border rounded"
+              value={businessName}
+              onChange={(e) => setBusinessName(e.target.value)}
+              required
+            />
+            <input
+              type="email"
+              placeholder="Contact Email"
+              className="mb-4 w-full px-3 py-2 border rounded"
+              value={contactEmail}
+              onChange={(e) => setContactEmail(e.target.value)}
+              required
+            />
+          </>
+        )}
         <button
           type="submit"
           className="w-full bg-[#FF9900] text-white py-2 rounded hover:bg-[#e68a00]"

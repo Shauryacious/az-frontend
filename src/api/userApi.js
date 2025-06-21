@@ -2,11 +2,11 @@
 
 import apiClient from "./config";
 
-// Accept clientType as an argument for signup and login
-export const signup = (email, password, clientType) =>
+// Accept businessName and contactEmail for seller signup
+export const signup = (email, password, clientType, businessName, contactEmail) =>
     apiClient.post(
         "/api/users/signup",
-        { email, password },
+        { email, password, businessName, contactEmail },
         {
             headers: {
                 "x-client-type": clientType

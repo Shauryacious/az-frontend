@@ -12,7 +12,7 @@ export default function AddProduct({ navigateTo }) {
     sku: "",
     description: "",
     price: "",
-    available: "",
+    stock: "", // <-- changed from available to stock
   });
   const [images, setImages] = useState([]);
   const [errors, setErrors] = useState({});
@@ -80,8 +80,8 @@ export default function AddProduct({ navigateTo }) {
       newErrors.description = "Description is required.";
     if (!product.price || Number(product.price) <= 0)
       newErrors.price = "Price must be positive.";
-    if (product.available === "" || Number(product.available) < 0)
-      newErrors.available = "Available quantity is required.";
+    if (product.stock === "" || Number(product.stock) < 0)
+      newErrors.stock = "Stock is required.";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -95,7 +95,7 @@ export default function AddProduct({ navigateTo }) {
     formData.append("sku", product.sku);
     formData.append("description", product.description);
     formData.append("price", product.price);
-    formData.append("available", product.available);
+    formData.append("stock", product.stock); // <-- changed from available to stock
     images.forEach((file) => formData.append("images", file));
 
     try {
@@ -106,7 +106,7 @@ export default function AddProduct({ navigateTo }) {
         sku: "",
         description: "",
         price: "",
-        available: "",
+        stock: "", // <-- changed from available to stock
       });
       setImages([]);
       setTimeout(() => navigateTo("productList"), 1200);
@@ -214,7 +214,6 @@ export default function AddProduct({ navigateTo }) {
               </div>
             </div>
           </section>
-
           {/* Offer */}
           <section className="bg-white p-8 rounded-2xl shadow border border-gray-100">
             <h2 className="text-lg font-semibold text-[#232f3e] mb-4">Offer</h2>
@@ -253,26 +252,26 @@ export default function AddProduct({ navigateTo }) {
               </div>
               <div>
                 <label
-                  htmlFor="available"
+                  htmlFor="stock"
                   className="block text-xs font-bold text-gray-700 uppercase tracking-widest"
                 >
-                  Available Quantity
+                  Stock
                 </label>
                 <input
                   type="number"
-                  name="available"
-                  id="available"
-                  value={product.available}
+                  name="stock"
+                  id="stock"
+                  value={product.stock}
                   onChange={handleChange}
                   required
                   min="0"
                   className={`mt-1 block w-full px-3 py-2 border ${
-                    errors.available ? "border-red-500" : "border-gray-300"
+                    errors.stock ? "border-red-500" : "border-gray-300"
                   } rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#232f3e] focus:border-[#232f3e] sm:text-sm`}
                 />
-                {errors.available && (
+                {errors.stock && (
                   <div className="text-xs text-red-500 mt-1">
-                    {errors.available}
+                    {errors.stock}
                   </div>
                 )}
               </div>
