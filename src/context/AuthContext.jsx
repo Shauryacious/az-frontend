@@ -1,6 +1,8 @@
+// Seller : src/context/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { fetchProfile, logout as apiLogout } from "../api";
 import { fetchSellerProfile } from "../api/sellerApi";
+import { CLIENT_TYPE } from "../constants/clientType";
 
 const AuthContext = createContext();
 
@@ -18,12 +20,12 @@ export function AuthProvider({ children }) {
   // Refetch user profile and update state
   const refreshUser = async () => {
     try {
-      const res = await fetchProfile();
+      const res = await fetchProfile(CLIENT_TYPE);
       setUser(res.data.user);
       // Only fetch seller profile if user is a seller
       if (res.data.user?.role === "seller") {
         try {
-          const sellerRes = await fetchSellerProfile();
+          const sellerRes = await fetchSellerProfile(CLIENT_TYPE);
           setSeller(sellerRes.data.seller);
         } catch {
           setSeller(null);
@@ -44,7 +46,7 @@ export function AuthProvider({ children }) {
       return;
     }
     try {
-      const sellerRes = await fetchSellerProfile();
+      const sellerRes = await fetchSellerProfile(CLIENT_TYPE);
       setSeller(sellerRes.data.seller);
     } catch {
       setSeller(null);
@@ -55,11 +57,11 @@ export function AuthProvider({ children }) {
   const refreshUserAndSeller = async () => {
     setLoading(true);
     try {
-      const res = await fetchProfile();
+      const res = await fetchProfile(CLIENT_TYPE);
       setUser(res.data.user);
       if (res.data.user?.role === "seller") {
         try {
-          const sellerRes = await fetchSellerProfile();
+          const sellerRes = await fetchSellerProfile(CLIENT_TYPE);
           setSeller(sellerRes.data.seller);
         } catch {
           setSeller(null);
@@ -76,7 +78,7 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    await apiLogout();
+    await apiLogout(CLIENT_TYPE);
     setUser(null);
     setSeller(null);
   };

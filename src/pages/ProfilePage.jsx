@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { createSeller } from "../api/sellerApi";
+import { CLIENT_TYPE } from "../constants/clientType";
 
 export default function ProfilePage() {
   const { user, seller, loading, logout, refreshSeller } = useAuth();
@@ -29,7 +30,7 @@ export default function ProfilePage() {
         <button
           className="mt-6 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
           onClick={async () => {
-            await logout();
+            await logout(CLIENT_TYPE);
             navigate("/login");
           }}
         >
@@ -61,8 +62,8 @@ export default function ProfilePage() {
             e.preventDefault();
             setError("");
             try {
-              await createSeller(businessName, contactEmail);
-              await refreshSeller();
+              await createSeller(businessName, contactEmail, CLIENT_TYPE);
+              await refreshSeller(CLIENT_TYPE);
               setShowSellerForm(false);
             } catch (err) {
               setError(
@@ -100,7 +101,7 @@ export default function ProfilePage() {
       <button
         className="mt-6 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
         onClick={async () => {
-          await logout();
+          await logout(CLIENT_TYPE);
           navigate("/login");
         }}
       >

@@ -2,7 +2,7 @@
 
 import apiClient from "./config";
 
-// Accept clientType as an argument
+// Accept clientType as an argument for signup and login
 export const signup = (email, password, clientType) =>
     apiClient.post(
         "/api/users/signup",
@@ -25,9 +25,24 @@ export const login = (email, password, clientType) =>
         }
     );
 
+// For logout and profile, always send x-client-type
+export const logout = (clientType) =>
+    apiClient.post(
+        "/api/users/logout",
+        {},
+        {
+            headers: {
+                "x-client-type": clientType
+            }
+        }
+    );
 
-export const logout = () =>
-    apiClient.post("/api/users/logout");
-
-export const fetchProfile = () =>
-    apiClient.get("/api/users/profile");
+export const fetchProfile = (clientType) =>
+    apiClient.get(
+        "/api/users/profile",
+        {
+            headers: {
+                "x-client-type": clientType
+            }
+        }
+    );

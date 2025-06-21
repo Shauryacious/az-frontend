@@ -1,8 +1,8 @@
+// src/pages/LoginPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api";
-
-const CLIENT_TYPE = "consumer-frontend";
+import { CLIENT_TYPE } from "../constants/clientType";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     try {
-      await login(email, password, CLIENT_TYPE); // Pass client type
+      await login(email, password, CLIENT_TYPE);
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.error || "Login failed");
